@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy Policy – The Proxy Magician</title>
+  <style>
+    :root { --bg: #f6f4fb; --surface: #fff; --text: #1d1730; --muted: #6b6482; --border: #e3def0; --accent: #6c3cff; color-scheme: light; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #14111d; --surface: #1d1928; --text: #ece9f5; --muted: #a39cb8; --border: #332c45; --accent: #9b7bff; color-scheme: dark; }
+    }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    main { max-width: 720px; margin: 0 auto; padding: 40px 16px 64px; }
+    header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    header img { width: 48px; height: 48px; }
+    h1 { font-size: 28px; line-height: 1.2; margin: 0; }
+    h2 { font-size: 19px; margin: 32px 0 8px; }
+    .updated { color: var(--muted); margin: 0 0 24px; }
+    .summary { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 10px; padding: 14px 18px; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 15px; }
+    th, td { text-align: left; padding: 10px 12px; border-top: 1px solid var(--border); vertical-align: top; }
+    th { border-top: 0; background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+    code { font-size: 14px; }
+    a { color: var(--accent); }
+    @media (max-width: 560px) { table, tbody, tr, td, th { display: block; } thead { display: none; } td:first-child { font-weight: 600; border-top: 1px solid var(--border); } td + td { border-top: 0; padding-top: 0; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icon128.png" alt="">
+    <h1>Privacy Policy – The Proxy Magician</h1>
+  </header>
+  <p class="updated">Last updated: October 13, 2026</p>
+
+  <p>The Proxy Magician is a free Chrome extension that lets you save up to 10 proxy servers and switch between them. This policy explains what the extension does with your information.</p>
+
+  <div class="summary">
+    <strong>The short version:</strong> The Proxy Magician does <strong>not</strong> collect, sell, share or send your data anywhere. It has no servers, no analytics, no ads and no trackers.
+  </div>
+
+  <h2>What is stored, and where</h2>
+  <p>When you save a proxy, the extension stores the following <strong>only on your device</strong>, in Chrome's local extension storage (<code>chrome.storage.local</code>):</p>
+  <ul>
+    <li>the name and color you choose for the proxy</li>
+    <li>the proxy type, host and port</li>
+    <li>the username and password, if you enter them</li>
+    <li>your bypass list (addresses that should not use the proxy)</li>
+    <li>which proxy is currently active</li>
+  </ul>
+  <p>This data is never synced to your Google account by the extension and never sent to the developer or any third party. Passwords are stored unencrypted in local extension storage, the same as most proxy extensions, so anyone with access to your computer account could read them. Uninstalling the extension deletes all of this data.</p>
+
+  <h2>Network traffic</h2>
+  <p>The extension makes <strong>no network requests of its own</strong>. When you turn on a proxy, Chrome sends your browsing traffic through the proxy server <em>you</em> configured. That proxy's operator can see your traffic according to their own policies; The Proxy Magician has no control over or access to it.</p>
+
+  <h2>Permissions</h2>
+  <table>
+    <thead><tr><th>Permission</th><th>Why it is needed</th></tr></thead>
+    <tbody>
+      <tr><td><code>proxy</code></td><td>To change Chrome's proxy settings to the proxy you select.</td></tr>
+      <tr><td><code>storage</code></td><td>To save your proxies on your device.</td></tr>
+      <tr><td><code>webRequest</code>, <code>webRequestAuthProvider</code></td><td>To answer a proxy's login request with the username and password you saved.</td></tr>
+      <tr><td>Access to all sites (optional)</td><td>Only requested if you save a proxy with a username. Chrome requires it to answer proxy login requests. The extension does not read, change or record the content of any website.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Export files</h2>
+  <p>If you use <strong>Export to file</strong>, a JSON file with your proxies is saved to your computer. Passwords are left out unless you tick <strong>Include passwords</strong>. You are responsible for keeping that file safe.</p>
+
+  <h2>Children</h2>
+  <p>The extension does not knowingly collect any information from anyone, including children.</p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, the new version will be published at this same address with a new "Last updated" date.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about this policy: <a href="mailto:support@monydevelop.me">support@monydevelop.me</a></p>
+</main>
+</body>
+</html>
