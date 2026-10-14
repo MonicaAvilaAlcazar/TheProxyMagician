@@ -1,0 +1,90 @@
+body {
+  width: 340px;
+  min-height: 200px;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px 8px 14px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 12px 8px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+.status .dot { width: 12px; height: 12px; }
+.status.is-on .dot { box-shadow: 0 0 0 4px color-mix(in srgb, var(--dot-color, var(--accent)) 25%, transparent); }
+.status-text { display: flex; flex-direction: column; min-width: 0; }
+.status-text strong { font-size: 14px; }
+.status-text .mono { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+#notices { display: flex; flex-direction: column; gap: 8px; }
+#notices:empty { display: none; }
+
+.profile-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.profile-btn:hover { border-color: var(--accent); }
+.profile-btn .info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.profile-btn .name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-btn .mono { color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-btn .check { width: 18px; height: 18px; color: var(--accent); visibility: hidden; flex: none; }
+.profile-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.profile-btn[aria-pressed="true"] .check { visibility: visible; }
+
+.empty { padding: 16px; text-align: center; }
+.empty p { margin: 0 0 10px; color: var(--muted); }
+
+.modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.mode-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 9px 12px;
+  text-align: left;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.mode-btn:hover { border-color: var(--accent); }
+.mode-btn strong { font-size: 13px; }
+.mode-btn span { font-size: 12px; color: var(--muted); }
+.mode-btn[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+
+.popup-footer {
+  display: flex;
+  justify-content: center;
+  padding: 4px 12px 12px;
+}
