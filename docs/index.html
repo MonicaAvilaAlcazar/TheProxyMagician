@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Proxy Magician</title>
+  <meta name="description" content="A free, privacy-first Chrome extension to save up to 10 proxy servers and switch between them in one click.">
+  <meta property="og:title" content="The Proxy Magician">
+  <meta property="og:description" content="Save up to 10 proxies and switch between them in one click. Free, private, no tracking.">
+  <meta property="og:image" content="images/promo-marquee.png">
+  <link rel="icon" href="icon128.png">
+  <style>
+    :root {
+      --bg: #f6f4fb;
+      --surface: #ffffff;
+      --surface-2: #f0edf8;
+      --border: #e3def0;
+      --text: #1d1730;
+      --muted: #6b6482;
+      --accent: #6c3cff;
+      --accent-soft: #ece5ff;
+      --gold: #ffb300;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14111d;
+        --surface: #1d1928;
+        --surface-2: #262133;
+        --border: #332c45;
+        --text: #ece9f5;
+        --muted: #a39cb8;
+        --accent: #9b7bff;
+        --accent-soft: #2c2347;
+        --gold: #ffcf66;
+        color-scheme: dark;
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    a { color: var(--accent); }
+    img { max-width: 100%; display: block; }
+    code { font: 0.88em ui-monospace, "SF Mono", Menlo, Consolas, monospace; background: var(--surface-2); padding: 1px 5px; border-radius: 5px; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+
+    /* Hero */
+    .hero {
+      color: #fff;
+      background:
+        radial-gradient(circle at 12% 18%, rgba(255, 194, 46, 0.22), transparent 35%),
+        radial-gradient(circle at 88% 92%, rgba(0, 184, 212, 0.25), transparent 40%),
+        linear-gradient(135deg, #7a4dff 0%, #4419c4 60%, #2a0e86 100%);
+      padding: 64px 0 72px;
+    }
+    .hero .wrap { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+    .hero .logo { width: 72px; height: 72px; margin-bottom: 20px; }
+    .hero h1 { font-size: clamp(36px, 6vw, 56px); line-height: 1.05; margin: 0 0 16px; letter-spacing: -0.02em; }
+    .hero p.lead { font-size: 20px; margin: 0 0 28px; color: rgba(255, 255, 255, 0.88); max-width: 480px; }
+    .hero .shot { border-radius: 14px; box-shadow: 0 30px 80px rgba(15, 5, 50, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.15); }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; font-weight: 600; text-decoration: none; }
+    .btn-light { background: #fff; color: #4419c4; }
+    .btn-outline { border: 1px solid rgba(255, 255, 255, 0.5); color: #fff; }
+    .btn:hover { filter: brightness(1.06); }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; padding: 0; list-style: none; }
+    .tags li { font-size: 13px; padding: 3px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.2); }
+
+    /* Sections */
+    section { padding: 64px 0 0; }
+    section:last-of-type { padding-bottom: 64px; }
+    h2 { font-size: 28px; line-height: 1.2; margin: 0 0 8px; letter-spacing: -0.01em; }
+    .sub { color: var(--muted); margin: 0 0 28px; max-width: 640px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; }
+
+    .facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: -36px; position: relative; }
+    .fact { padding: 18px 20px; }
+    .fact strong { display: block; font-size: 24px; line-height: 1.2; }
+    .fact span { color: var(--muted); font-size: 14px; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .feature { padding: 22px; }
+    .feature .ico { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); margin-bottom: 14px; }
+    .feature .ico svg { width: 22px; height: 22px; }
+    .feature h3 { margin: 0 0 6px; font-size: 17px; }
+    .feature p { margin: 0; color: var(--muted); font-size: 15px; }
+
+    .gallery { display: grid; gap: 20px; }
+    .gallery figure { margin: 0; overflow: hidden; }
+    .gallery img { width: 100%; height: auto; }
+    .gallery figcaption { padding: 12px 16px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--border); }
+
+    .arch { padding: 24px; }
+    .arch svg { width: 100%; height: auto; }
+    .arch .box { fill: var(--surface-2); stroke: var(--border); }
+    .arch .box-accent { fill: var(--accent-soft); stroke: var(--accent); }
+    .arch text { fill: var(--text); font: 600 14px system-ui, sans-serif; }
+    .arch text.small { fill: var(--muted); font-weight: 400; font-size: 12px; }
+    .arch .line { stroke: var(--muted); stroke-width: 1.5; fill: none; }
+    .arch .arrow { fill: var(--muted); }
+
+    .notes { padding: 8px 24px; }
+    .note { padding: 18px 0; border-top: 1px solid var(--border); }
+    .note:first-child { border-top: 0; }
+    .note h3 { margin: 0 0 6px; font-size: 17px; }
+    .note p { margin: 0; color: var(--muted); }
+
+    table { width: 100%; border-collapse: collapse; font-size: 15px; }
+    th, td { text-align: left; padding: 12px 16px; border-top: 1px solid var(--border); vertical-align: top; }
+    thead th { border-top: 0; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+    .table-card { overflow: hidden; }
+
+    .stack { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+    .stack li { padding: 6px 14px; border-radius: 999px; background: var(--surface); border: 1px solid var(--border); font-size: 14px; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 0; color: var(--muted); font-size: 14px; }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
+
+    @media (max-width: 860px) {
+      .hero .wrap { grid-template-columns: 1fr; }
+      .facts { grid-template-columns: repeat(2, 1fr); }
+      .grid-3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .hero { padding: 44px 0 64px; }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      table, tbody, tr, td { display: block; }
+      thead { display: none; }
+      td:first-child { font-weight: 600; }
+      td + td { border-top: 0; padding-top: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <img class="logo" src="icon128.png" alt="">
+      <h1>The Proxy Magician</h1>
+      <p class="lead">A free Chrome extension that saves up to 10 proxy servers and switches between them in one click.</p>
+      <div class="actions">
+        <!-- Replace href="#" with the Chrome Web Store URL once the extension is published. -->
+        <a class="btn btn-light" href="#">Add to Chrome</a>
+        <a class="btn btn-outline" href="privacy.html">Privacy policy</a>
+      </div>
+      <ul class="tags">
+        <li>Chrome Extension</li>
+        <li>Manifest V3</li>
+        <li>Vanilla JavaScript</li>
+        <li>Free &amp; open source</li>
+      </ul>
+    </div>
+    <img class="shot" src="images/screenshot-1.png" alt="The Proxy Magician popup with five saved proxies, Work Office active">
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="facts">
+      <div class="card fact"><strong>10</strong><span>saved proxies</span></div>
+      <div class="card fact"><strong>4</strong><span>protocols: HTTP, HTTPS, SOCKS4, SOCKS5</span></div>
+      <div class="card fact"><strong>0</strong><span>dependencies, servers or trackers</span></div>
+      <div class="card fact"><strong>~58 KB</strong><span>total package size</span></div>
+    </div>
+  </div>
+
+  <section id="overview">
+    <div class="wrap">
+      <h2>Overview</h2>
+      <p class="sub">Developers, testers and people who move between networks often need to change Chrome's proxy many times a day. Chrome sends you to your operating system's settings to do it. The Proxy Magician puts it one click away in the toolbar, and the badge always shows how you're connected.</p>
+      <div class="grid-3">
+        <div class="card feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <h3>One-click switching</h3>
+          <p>Pick any saved proxy from the toolbar popup, or turn the proxy off with System or Direct mode.</p>
+        </div>
+        <div class="card feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <h3>Up to 10 profiles</h3>
+          <p>Each proxy gets its own name and color. The badge shows the first letters of the active proxy's name in its color.</p>
+        </div>
+        <div class="card feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <h3>Automatic sign-in</h3>
+          <p>Saved usernames and passwords are entered for you when an HTTP or HTTPS proxy asks for them.</p>
+        </div>
+        <div class="card feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></div>
+          <h3>Bypass rules</h3>
+          <p>Each proxy has its own list of addresses that skip it, such as <code>localhost</code>, <code>*.internal.com</code> or <code>192.168.0.0/16</code>.</p>
+        </div>
+        <div class="card feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01"/></svg></div>
+          <h3>Clear warnings</h3>
+          <p>It tells you when another extension or a policy controls your proxy, and when the proxy fails to connect.</p>
+        </div>
+        <div class="card feature">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
+          <h3>Import &amp; export</h3>
+          <p>Back up your proxies to a JSON file and move them to another computer. Passwords are only included if you ask.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screenshots">
+    <div class="wrap">
+      <h2>Screenshots</h2>
+      <p class="sub">The popup is for quick switching. The settings page is where you add, edit and back up proxies. It supports light and dark mode.</p>
+      <div class="gallery">
+        <figure class="card">
+          <a href="images/screenshot-2.png"><img src="images/screenshot-2.png" alt="Settings page listing five saved proxies with Use, Edit and Delete buttons" loading="lazy"></a>
+          <figcaption>The settings page: saved proxies, the active one marked, and backup tools.</figcaption>
+        </figure>
+        <figure class="card">
+          <a href="images/screenshot-3.png"><img src="images/screenshot-3.png" alt="Edit proxy dialog with name, color, type, host, port, sign-in and bypass list fields" loading="lazy"></a>
+          <figcaption>Editing a proxy: name, color, type, host, port, optional sign-in and bypass list, all checked before saving.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="sub">Built on Manifest V3 with no frameworks or build step. One service worker owns every change to the browser's proxy setting. The pages only send it requests.</p>
+      <div class="card arch">
+        <svg viewBox="0 0 900 300" role="img" aria-label="Architecture: popup and options page send messages to the background service worker, which reads chrome.storage and controls chrome.proxy, the toolbar badge and proxy sign-in">
+          <defs>
+            <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0 0 10 5 0 10z"/></marker>
+          </defs>
+          <rect class="box" x="20" y="40" width="190" height="70" rx="12"/>
+          <text x="115" y="70" text-anchor="middle">Popup</text>
+          <text class="small" x="115" y="90" text-anchor="middle">quick switch</text>
+
+          <rect class="box" x="20" y="190" width="190" height="70" rx="12"/>
+          <text x="115" y="220" text-anchor="middle">Options page</text>
+          <text class="small" x="115" y="240" text-anchor="middle">add · edit · import</text>
+
+          <rect class="box-accent" x="340" y="105" width="220" height="90" rx="12"/>
+          <text x="450" y="142" text-anchor="middle">Service worker</text>
+          <text class="small" x="450" y="164" text-anchor="middle">background.js</text>
+
+          <rect class="box" x="690" y="20" width="190" height="56" rx="12"/>
+          <text x="785" y="54" text-anchor="middle">chrome.proxy</text>
+          <rect class="box" x="690" y="96" width="190" height="56" rx="12"/>
+          <text x="785" y="130" text-anchor="middle">Toolbar badge</text>
+          <rect class="box" x="690" y="172" width="190" height="56" rx="12"/>
+          <text x="785" y="206" text-anchor="middle">Proxy sign-in</text>
+          <rect class="box" x="690" y="248" width="190" height="44" rx="12"/>
+          <text x="785" y="276" text-anchor="middle">chrome.storage</text>
+
+          <path class="line" d="M210 75 C 280 75, 280 135, 338 135" marker-end="url(#arr)"/>
+          <path class="line" d="M210 225 C 280 225, 280 165, 338 165" marker-end="url(#arr)"/>
+          <text class="small" x="275" y="152" text-anchor="middle">setState</text>
+          <path class="line" d="M560 130 C 620 130, 620 48, 688 48" marker-end="url(#arr)"/>
+          <path class="line" d="M560 145 L 688 124" marker-end="url(#arr)"/>
+          <path class="line" d="M560 160 L 688 200" marker-end="url(#arr)"/>
+          <path class="line" d="M560 175 C 620 175, 620 270, 688 270" marker-end="url(#arr)"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="engineering">
+    <div class="wrap">
+      <h2>Engineering notes</h2>
+      <p class="sub">A few problems that took more than one try.</p>
+      <div class="card notes">
+        <div class="note">
+          <h3>Asking for less permission</h3>
+          <p>Answering a proxy's login request needs access to all sites, which shows Chrome's strongest install warning. The Proxy Magician makes that access optional. It only asks when you save a proxy with a username, and it re-registers its sign-in listeners as soon as you grant it. People who don't use proxy passwords never see the warning.</p>
+        </div>
+        <div class="note">
+          <h3>A badge that never lags behind</h3>
+          <p>Testing in a real browser showed the badge was always one switch behind. Changing the proxy fired a settings-change event that read the saved state before the new state had been written. Now the state is saved first, then the proxy changes, and the old state is restored if Chrome rejects the change.</p>
+        </div>
+        <div class="note">
+          <h3>No sign-in loops</h3>
+          <p>If a saved password is wrong, a careless extension can keep sending it forever. The Proxy Magician counts attempts per request and stops after two, so Chrome shows its own login prompt instead.</p>
+        </div>
+        <div class="note">
+          <h3>Edits apply right away</h3>
+          <p>The service worker watches storage. Editing the active proxy applies the change immediately, and deleting it switches back to system settings, so Chrome is never left pointing at a proxy that no longer exists.</p>
+        </div>
+        <div class="note">
+          <h3>Screenshots made from the real interface</h3>
+          <p>The store screenshots and promo tiles are made by a script. It loads the real popup and settings pages into headless Chrome with a fake <code>chrome.*</code> API, so the images always match the shipped interface.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <h2>Permissions &amp; privacy</h2>
+      <p class="sub">Your proxies are stored only on your device. The extension makes no network requests of its own and collects nothing. <a href="privacy.html">Read the full privacy policy.</a></p>
+      <div class="card table-card">
+        <table>
+          <thead><tr><th>Permission</th><th>Used for</th></tr></thead>
+          <tbody>
+            <tr><td><code>proxy</code></td><td>Setting Chrome's proxy to the profile you pick.</td></tr>
+            <tr><td><code>storage</code></td><td>Saving your proxies locally on your device.</td></tr>
+            <tr><td><code>webRequest</code> + <code>webRequestAuthProvider</code></td><td>Answering proxy login requests with your saved credentials.</td></tr>
+            <tr><td>All sites <em>(optional)</em></td><td>Requested only when a proxy has a username. Chrome needs it to answer proxy logins. No page content is read or changed.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="wrap">
+      <h2>Tech stack</h2>
+      <p class="sub">Small and easy to review, with no build step and no third-party code.</p>
+      <ul class="stack">
+        <li>Chrome Extensions Manifest V3</li>
+        <li>Vanilla JavaScript</li>
+        <li>HTML &amp; CSS (custom properties, light/dark)</li>
+        <li>chrome.proxy</li>
+        <li>chrome.webRequest (async auth)</li>
+        <li>chrome.storage</li>
+        <li>chrome.permissions</li>
+        <li>Headless Chrome for asset generation</li>
+        <li>Bash build scripts</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>The Proxy Magician · Version 1.0.0 · MIT License</span>
+    <span><a href="mailto:support@monydevelop.me">support@monydevelop.me</a> · <a href="privacy.html">Privacy policy</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
