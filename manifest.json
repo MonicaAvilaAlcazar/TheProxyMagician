@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "The Proxy Magician",
+  "short_name": "Proxy Magician",
+  "version": "1.0.0",
+  "description": "Switch between up to 10 saved proxy servers in one click. HTTP, HTTPS, SOCKS4 and SOCKS5. Free, private, no tracking.",
+  "minimum_chrome_version": "120",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "The Proxy Magician",
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "options_page": "src/options.html",
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "permissions": [
+    "proxy",
+    "storage",
+    "webRequest",
+    "webRequestAuthProvider"
+  ],
+  "optional_host_permissions": [
+    "<all_urls>"
+  ]
+}
