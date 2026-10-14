@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manage proxies – The Proxy Magician</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="../icons/icon48.png" alt="">
+      <h1>The Proxy Magician <small>Save up to 10 proxies and switch in one click</small></h1>
+    </div>
+  </header>
+
+  <main>
+    <div class="notice notice-warn hidden" id="grantNotice">
+      <strong>Automatic sign-in is off.</strong>
+      One of your proxies has a username and password. To enter them for you, Chrome needs your permission to
+      respond to proxy login requests. Without it, Chrome will ask you for the password itself.
+      <br>
+      <button class="btn" id="grantBtn">Allow automatic sign-in</button>
+    </div>
+
+    <section class="card panel">
+      <div class="panel-head">
+        <h2>Saved proxies <span class="count" id="count"></span></h2>
+        <button class="btn btn-primary" id="addBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Add proxy
+        </button>
+      </div>
+      <ul class="rows" id="rows"></ul>
+      <p class="empty hidden" id="empty">No proxies yet. Click <strong>Add proxy</strong> to create your first one.</p>
+      <p class="limit hidden" id="limit">You've reached the limit of 10 proxies. Delete one to add another.</p>
+    </section>
+
+    <section class="card panel">
+      <div class="panel-head">
+        <h2>Backup</h2>
+      </div>
+      <p class="muted">Export your proxies to a file, or import them on another computer. Imported proxies are added to your list.</p>
+      <div class="backup">
+        <button class="btn" id="exportBtn">Export to file</button>
+        <label class="check-label"><input type="checkbox" id="exportPasswords"> Include passwords</label>
+        <span class="spacer"></span>
+        <button class="btn" id="importBtn">Import from file</button>
+        <input type="file" id="importFile" accept="application/json,.json" class="hidden">
+      </div>
+      <p class="notice notice-warn export-warning hidden" id="exportWarning" role="status">
+        Passwords will be saved as plain text. Anyone who gets this file can read them, so store it somewhere safe.
+      </p>
+      <p class="feedback" id="backupFeedback" role="status"></p>
+    </section>
+
+    <p class="footnote">
+      Everything is stored only on this device. The Proxy Magician has no servers, no analytics and no ads.
+      <span id="version"></span>
+    </p>
+  </main>
+
+  <dialog id="editor" aria-labelledby="editorTitle">
+    <form id="form" novalidate>
+      <h2 id="editorTitle">Add proxy</h2>
+
+      <div class="field">
+        <label for="name">Name</label>
+        <input id="name" name="name" maxlength="30" placeholder="e.g. Work, Home, US server" autocomplete="off" required>
+        <p class="error" data-for="name"></p>
+      </div>
+
+      <div class="field">
+        <span class="label">Color</span>
+        <div class="swatches" id="swatches" role="radiogroup" aria-label="Color"></div>
+      </div>
+
+      <div class="grid-3">
+        <div class="field">
+          <label for="scheme">Type</label>
+          <select id="scheme" name="scheme">
+            <option value="http">HTTP</option>
+            <option value="https">HTTPS</option>
+            <option value="socks4">SOCKS4</option>
+            <option value="socks5">SOCKS5</option>
+          </select>
+          <p class="error" data-for="scheme"></p>
+        </div>
+        <div class="field">
+          <label for="host">Host</label>
+          <input id="host" name="host" placeholder="proxy.example.com" autocomplete="off" spellcheck="false" required>
+          <p class="error" data-for="host"></p>
+        </div>
+        <div class="field">
+          <label for="port">Port</label>
+          <input id="port" name="port" type="number" min="1" max="65535" inputmode="numeric" placeholder="8080" required>
+          <p class="error" data-for="port"></p>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend>Sign-in <span class="muted">(optional)</span></legend>
+        <div class="grid-2">
+          <div class="field">
+            <label for="username">Username</label>
+            <input id="username" name="username" autocomplete="off" spellcheck="false">
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="pw">
+              <input id="password" name="password" type="password" autocomplete="new-password">
+              <button type="button" class="icon-btn" id="togglePw" aria-label="Show password" title="Show password">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <p class="hint" id="socksHint">Chrome does not support sign-in for SOCKS proxies. Use HTTP or HTTPS if your proxy requires a password.</p>
+        <p class="hint">Passwords are stored unencrypted in Chrome's local extension storage on this device.</p>
+      </fieldset>
+
+      <div class="field">
+        <label for="bypass">Don't use the proxy for</label>
+        <textarea id="bypass" name="bypass" rows="3" spellcheck="false"></textarea>
+        <p class="hint">One entry per line, e.g. <code>*.internal.com</code>, <code>192.168.0.0/16</code>. <code>&lt;local&gt;</code> means plain host names without dots.</p>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn" id="cancelBtn">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="saveBtn">Save proxy</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="shared.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>
