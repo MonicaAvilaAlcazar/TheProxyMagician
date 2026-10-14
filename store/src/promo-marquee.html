@@ -1,0 +1,16 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="stage.css">
+<style>
+  body { --w: 1400px; --h: 560px; display: flex; align-items: center; justify-content: space-between; padding: 0 120px; box-sizing: border-box; }
+  .window { transform: scale(0.82); }
+</style></head>
+<body>
+  <div class="copy">
+    <img class="logo" src="icon.svg" alt="">
+    <h1>The Proxy Magician</h1>
+    <p>Save up to 10 proxies and switch between them in one click. Free, private, no tracking.</p>
+  </div>
+  <div class="window"><iframe id="f" width="340" data-auto-height="1"></iframe></div>
+  <script src="frame.js"></script>
+  <script>mountExtensionPage(document.getElementById('f'), 'popup.html');</script>
+</body></html>

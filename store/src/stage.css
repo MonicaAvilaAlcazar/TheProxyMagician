@@ -1,0 +1,25 @@
+html, body { margin: 0; }
+body {
+  width: var(--w);
+  height: var(--h);
+  overflow: hidden;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 194, 46, 0.22), transparent 35%),
+    radial-gradient(circle at 85% 90%, rgba(0, 184, 212, 0.25), transparent 40%),
+    linear-gradient(135deg, #7a4dff 0%, #4419c4 60%, #2a0e86 100%);
+  color: #fff;
+  position: relative;
+}
+.copy h1 { font-size: 54px; line-height: 1.05; margin: 0 0 18px; letter-spacing: -0.02em; font-weight: 750; }
+.copy p { font-size: 22px; line-height: 1.4; margin: 0; color: rgba(255, 255, 255, 0.85); max-width: 460px; }
+.copy .logo { width: 72px; height: 72px; margin-bottom: 24px; display: block; }
+.window {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(15, 5, 50, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.15);
+  background: #fff;
+  flex: none;
+}
+iframe { border: 0; display: block; }
+.spark { position: absolute; opacity: 0.6; }
