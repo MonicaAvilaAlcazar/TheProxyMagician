@@ -65,9 +65,9 @@ GOOD TO KNOW
 
 ### Additional fields
 
-- **Official URL**: leave empty (or your GitHub repo)
-- **Homepage URL**: your GitHub repo, if you publish the code
-- **Support URL**: your GitHub repo's Issues page, or leave empty (support email: support@monydevelop.me)
+- **Official URL**: leave empty (only for a Search Console–verified domain you want to link)
+- **Homepage URL**: https://monydevelop.me/projects/the-proxy-magician
+- **Support URL**: https://github.com/MonicaAvilaAlcazar/TheProxyMagician/issues (support email: support@monydevelop.me)
 - **Mature content**: No
 
 ---
@@ -120,9 +120,11 @@ Tick all three certifications:
 
 **Privacy policy URL**
 
-Host `docs/privacy.html` publicly and paste the URL here. The easiest free option:
-push this repo to GitHub, then Settings → Pages → Deploy from branch → `main` / `/docs`.
-The URL will be `https://<your-username>.github.io/<repo-name>/privacy.html`.
+```
+https://monydevelop.me/projects/the-proxy-magician/privacy
+```
+
+Keep it in sync with `PRIVACY.md` when the policy changes.
 
 ---
 
@@ -137,7 +139,7 @@ The URL will be `https://<your-username>.github.io/<repo-name>/privacy.html`.
 ## Before you submit — checklist
 
 - [x] Contact email set to support@monydevelop.me in `PRIVACY.md` and `docs/privacy.html`
-- [ ] Publish `docs/privacy.html` and paste its URL in the Privacy tab
+- [x] Privacy policy published at https://monydevelop.me/projects/the-proxy-magician/privacy
 - [ ] Register a developer account (one-time US$5 fee) and verify your contact email
 - [ ] Run `./scripts/package.sh` and upload the zip
 - [ ] Upload the images from `store/assets/`
