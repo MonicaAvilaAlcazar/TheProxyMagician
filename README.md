@@ -2,6 +2,8 @@
 
 A free Chrome extension (Manifest V3) for saving up to **10 proxy servers** and switching between them in one click.
 
+**[Install from the Chrome Web Store](https://chromewebstore.google.com/detail/the-proxy-magician/hmkcfbjaidhibekofgmmdnigapibkcei)**
+
 ![Popup](store/assets/screenshot-1.png)
 
 ## Features
